@@ -26,3 +26,4 @@ local.properties
 # Locally stored "Eclipse launch configurations"
 *.launch
 /build/
+src/org/unibl/etf/dao/ConnectionPool.properties

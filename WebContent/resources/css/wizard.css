@@ -1,0 +1,107 @@
+.wizard_container {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: -3%;
+    padding-bottom: 5%;
+}
+
+.logo {
+	max-width: 300px;
+	min-width: 200px;
+	margin: auto;
+}
+
+.logo img {
+	width: 100%;
+}
+
+.step_one_content {
+	text-align: center;
+}
+
+.step_content {
+	padding-top: 3%;
+	width: 100%;
+}
+
+.navigation_buttons {
+	display: inline-block;
+	width: 100%;
+	padding-top: 2%;
+}
+
+.navigation_buttons .prev {
+	float: left;
+}
+
+.navigation_buttons .next {
+	float: right;
+}
+
+.input_center {
+	width: 60%;
+	margin: auto;
+}
+
+.step_two {
+	width: 100%;
+	text-align: center;	
+}
+
+.step_three {
+	width: 100%;
+	text-align: center;
+}
+
+.event_image {
+	height: 300px !important;
+	margin: 0 auto;
+}
+
+.step_four {
+	width: 100%;
+	text-align: center;	
+}
+
+.event_image img {
+	padding: 3%;
+	height: 100%;
+}
+
+.bold_left {
+	display: block;
+	font-weight: bold;
+	text-align: left;
+}
+
+.input_field {
+	min-width: 100% !important;
+}
+
+.justify_text {
+	display: block;
+	text-align: justify;
+}
+
+.title {
+	display: block;
+	font-size: xx-large;
+	font-weight: bold;
+}
+
+.active_tab .ui-steps-number {
+	background: #007ad9 !important;
+    color: #fff !important;
+}
+
+.active_tab .ui-steps-title {
+	font-weight: 700 !important;
+    color: #333 !important;
+}
+
+@media only screen and (max-width: 1000px) {
+	.wizard_container {
+		  width: 90%;
+		  margin: auto;
+	}
+}

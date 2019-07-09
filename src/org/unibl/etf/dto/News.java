@@ -1,8 +1,11 @@
 package org.unibl.etf.dto;
 
-import java.sql.Date;
+import java.io.Serializable;
+import java.util.Date;
 
-public class News {
+public class News implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	private Date dateCreated;

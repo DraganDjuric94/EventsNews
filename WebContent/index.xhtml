@@ -1,41 +1,183 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-  <ui:composition template="/WEB-INF/include/template.xhtml">
-    <ui:define name="head">
-        <title>Hello JSF Bootstrap</title>
-        <!-- Custom styles for this template -->
-        <h:outputStylesheet name="css/starter-template.css"/>
-    </ui:define>
-    <ui:define name="body">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
-    <div class="container">
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br/> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
-    </div><!-- /.container -->
-    </ui:define>
-  </ui:composition> 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+    	<link rel="shortcut icon" type="image/x-icon" href="#{resource['images/favicon.ico']}"/>
+    	<h:outputStylesheet library = "css" name = "init.css" /> 
+    	<h:outputStylesheet library = "css" name = "wizard.css" />
+    </h:head>
+ 
+    <h:body>
+    	<div class="logo">
+			<p:graphicImage name="images/logo_transparent.png" />
+		</div>
+    	<h:panelGroup id="wizard" layout="block" styleClass="wizard_container">
+	        <p:steps>
+			    <p:menuitem value="Start" styleClass="#{(selectionBean.selection.selectedStep > 0) ? 'active_tab' : ''}" />
+			    <p:menuitem value="Enter info" styleClass="#{(selectionBean.selection.selectedStep > 1) ? 'active_tab' : ''}" />
+			    <p:menuitem value="Share" styleClass="#{(selectionBean.selection.selectedStep > 2) ? 'active_tab' : ''}" />
+			    <p:menuitem value="Done" styleClass="#{(selectionBean.selection.selectedStep > 3) ? 'active_tab' : ''}" />
+			</p:steps>
+			
+			<div class="step_content">
+				<!-- ****************************** STEP ONE ****************************** -->
+				<h:form id="type_form" style="#{selectionBean.selection.isStepActive('universal', 1) ? 'display: block;' : 'display: none;'}">
+					<h:panelGroup layout="block" styleClass="step_one_content">
+						<div class="navigation_buttons">
+				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" type="button" value="Previous">
+				    			<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
+							</p:commandButton>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
+							</p:commandButton>
+				        </div>
+				        <p:messages>
+				            <p:autoUpdate />
+				        </p:messages>
+						<h1>Welcome to Notify!</h1>
+						<br/>
+						<br/>
+						<p:outputLabel for="notice_type" value="Select your feed type and start notifying now:" />
+						<br/>
+						<br/>
+				        <p:selectOneButton id="notice_type" value="#{selectionBean.selection.noticeType}" required="true" >
+				            <f:selectItem itemLabel="Share news" itemValue="news" />
+				            <f:selectItem itemLabel="Share events" itemValue="event" />
+				        </p:selectOneButton>
+					</h:panelGroup>
+				</h:form>
+				<!-- ********************************************************************** -->
+				
+				<!-- ****************************** STEP TWO ****************************** -->
+				<h:form id="event_form" style="#{selectionBean.selection.isStepActive('event', 2) ? 'display: block;' : 'display: none;'}">
+					<h:panelGroup layout="block" styleClass="step_two" >
+						<div class="navigation_buttons">
+				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" type="button" value="Previous">
+				        		<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
+							</p:commandButton>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
+							</p:commandButton>
+				        </div>
+				        <p:messages>
+				            <p:autoUpdate />
+				        </p:messages>
+						<h:panelGrid styleClass="input_center" columns="1" cellpadding="3">
+							<p:outputLabel for="event_name" value="Name:" />
+							<p:inputText id="event_name" styleClass="input_field" value="#{eventBean.event.name}" required="true">
+								<f:validateLength minimum="1" maximum="45" />
+							</p:inputText>
+							<p:outputLabel for="event_date" value="Date and Time:" />
+							<p:datePicker id="event_date" styleClass="input_field" value="#{eventBean.event.dateTime}" required="true" mindate="#{selectionBean.justNow()}" showTime="true" readonlyInput="true">
+								<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+							</p:datePicker>
+							<p:outputLabel for="event_category" value="Category:" />
+						        <p:selectOneMenu id="event_category" value="#{eventBean.event.category}" styleClass="input_field">
+						            <f:selectItems value="#{eventBean.categories}" var="category" itemLabel="#{category.name}" itemValue="#{category}" />
+						            <f:converter converterId="customCategoryConverter" />
+						        </p:selectOneMenu>
+							<p:outputLabel for="event_description" value="Description:" />
+							<p:inputTextarea id="event_description" styleClass="input_field" value="#{eventBean.event.description}" rows="5" maxlength="500"  required="true">
+								<f:validateLength minimum="1" maximum="500" />
+							</p:inputTextarea>
+							<p:outputLabel for="event_image_url" value="Image URL:" />
+							<p:inputText id="event_image_url" styleClass="input_field" value="#{eventBean.event.image}" required="true">
+								<f:validateRegex pattern="(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)" />
+							</p:inputText>
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:form>
+				
+				<h:form id="news_form" style="#{selectionBean.selection.isStepActive('news', 2) ? 'display: block;' :'display: none;'}">
+					<h:panelGroup layout="block" styleClass="step_two">
+						<div class="navigation_buttons">
+				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" type="button" value="Previous" >
+				        		<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
+							</p:commandButton>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
+							</p:commandButton>
+			        	</div>
+			        	<p:messages>
+				            <p:autoUpdate />
+				        </p:messages>
+						<h:panelGrid styleClass="input_center" columns="1" cellpadding="3">
+							<p:outputLabel for="news_title" value="Title:" />
+							<p:inputText value="#{newsBean.news.title}" id="news_title" styleClass="input_field" required="true"/>
+							<p:outputLabel for="news_text" value="Text:" />
+							<p:inputTextarea value="#{newsBean.news.text}" id="news_text" styleClass="input_field" required="true" rows="5" maxlength="2000" />
+						</h:panelGrid>
+					</h:panelGroup>
+				</h:form>
+				<!-- ********************************************************************** -->
+				
+				<!-- ***************************** STEP THREE ***************************** -->
+				<h:form>
+					<h:panelGroup layout="block" styleClass="step_three" style="#{selectionBean.selection.isStepActive('event', 3) ? 'display: block;' :'display: none;'}">
+						<div class="navigation_buttons">
+				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" value="Previous">
+				        		<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
+							</p:commandButton>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
+							</p:commandButton>
+				        </div>
+						<div class="event_image">
+							<p:graphicImage url="#{eventBean.event.image}" />
+						</div>
+						<h:outputText class="title" value="#{eventBean.event.name}" />
+						<h:outputText styleClass="bold_left" value="Category: #{eventBean.event.category.name}" />
+						<div class="bold_left">
+							<h:outputText value="Time: " />
+							<h:outputText value="#{eventBean.event.dateTime}">
+								<f:convertDateTime pattern="MM/dd/yy HH:mm" />
+							</h:outputText>
+						</div>
+						<br/>
+						
+						<h:outputText styleClass="justify_text" value="#{eventBean.event.description}" />
+						
+					</h:panelGroup>
+						
+					<h:panelGroup layout="block" styleClass="step_three" style="#{selectionBean.selection.isStepActive('news', 3) ? 'display: block;' :'display: none;'}">
+						<div class="navigation_buttons">
+				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" value="Previous">
+				        		<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
+							</p:commandButton>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}">
+					        	<f:ajax render=":wizard" ></f:ajax>
+							</p:commandButton>
+				        </div>
+						<h:outputText styleClass="title" value="#{newsBean.news.title}" />
+						<br/>
+						<h:outputText styleClass="justify_text" value="#{newsBean.news.text}" />
+					</h:panelGroup>
+				</h:form>
+				<!-- ********************************************************************** -->
+				
+				<!-- ***************************** STEP FOUR ***************************** -->
+				<h:form>
+					<h:panelGroup layout="block" styleClass="step_four" style="#{selectionBean.selection.isStepActive('universal', 4) ? 'display: block;' :'display: none;'}">
+						<div class="navigation_buttons">
+				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" value="Previous">
+				        		<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
+							</p:commandButton>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
+							</p:commandButton>
+				        </div>
+						<h1>All done!</h1>
+						<h4>Thank you for using Notify, click the button below to create another feed...</h4>
+						<br/>
+						<p:commandButton value="Create another feed">
+							<p:ajax listener="#{selectionBean.resetWizard}" update=":wizard" ></p:ajax>
+							<p:ajax listener="#{eventBean.resetEvent}" update=":wizard" ></p:ajax>
+							<p:ajax listener="#{newsBean.resetNews}" update=":wizard" ></p:ajax>
+						</p:commandButton>
+						
+					</h:panelGroup>
+				</h:form>
+				<!-- ********************************************************************** -->
+				
+				
+			</div>
+		</h:panelGroup>
+    </h:body>
 </html>

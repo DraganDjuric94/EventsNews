@@ -1,17 +1,20 @@
 package org.unibl.etf.dto;
 
-import java.sql.Timestamp;
+import java.io.Serializable;
+import java.util.Date;
 
-public class Event {
+public class Event implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Integer id;
 	private String name;
-	private Timestamp dateTime;
+	private Date dateTime;
 	private String description;
 	private String image;
 	private Category category;
 	
-	public Event(Integer id, String name, Timestamp dateTime, String description, String image, Category category) {
+	public Event(Integer id, String name, Date dateTime, String description, String image, Category category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -39,11 +42,11 @@ public class Event {
 		this.name = name;
 	}
 
-	public Timestamp getDateTime() {
+	public Date getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Timestamp dateTime) {
+	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
 

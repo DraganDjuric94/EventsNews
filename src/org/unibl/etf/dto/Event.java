@@ -73,5 +73,13 @@ public class Event implements Serializable{
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	@Override
+	public String toString() {
+		return "Event [id=" + id + ", name=" + name + ", dateTime=" + dateTime + ", description=" + description
+				+ ", image=" + image + ", category=" + category + "]";
+	}
+	
+	
 	
 }

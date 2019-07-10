@@ -110,4 +110,8 @@ public class CategoryDAO {
 		return allCategories;
 	}
 	
+	public static boolean isDataValid(Category category) {
+		return getInstance().readAllCategories().contains(category);
+	}
+	
 }

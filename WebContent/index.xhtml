@@ -120,6 +120,9 @@
 					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
 							</p:commandButton>
 				        </div>
+				        <p:messages>
+				            <p:autoUpdate />
+				        </p:messages>
 						<div class="event_image">
 							<p:graphicImage url="#{eventBean.event.image}" />
 						</div>
@@ -142,10 +145,12 @@
 				        	<p:commandButton styleClass="prev" disabled="#{!selectionBean.hasPrevoius()}" value="Previous">
 				        		<p:ajax listener="#{selectionBean.previousStep}" update=":wizard" ></p:ajax>
 							</p:commandButton>
-					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}">
-					        	<f:ajax render=":wizard" ></f:ajax>
+					        <p:commandButton styleClass="next" disabled="#{!selectionBean.hasNext()}" value="Next" action="#{selectionBean.nextStep}" update=":wizard">
 							</p:commandButton>
 				        </div>
+				        <p:messages>
+				            <p:autoUpdate />
+				        </p:messages>
 						<h:outputText styleClass="title" value="#{newsBean.news.title}" />
 						<br/>
 						<h:outputText styleClass="justify_text" value="#{newsBean.news.text}" />

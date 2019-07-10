@@ -53,5 +53,12 @@ public class News implements Serializable{
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	@Override
+	public String toString() {
+		return "News [id=" + id + ", dateCreated=" + dateCreated + ", title=" + title + ", text=" + text + "]";
+	}
+	
+	
 	
 }

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.unibl.etf.dto.Event;
 import org.unibl.etf.dto.News;
 
 @ManagedBean
